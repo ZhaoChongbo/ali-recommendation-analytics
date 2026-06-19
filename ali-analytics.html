@@ -8,39 +8,6 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
 
   <style>
-    @font-face {
-      font-family: 'Outfit';
-      src: url('./_shared/fonts/Outfit-Bold.ttf') format('truetype');
-      font-weight: 700;
-    }
-    @font-face {
-      font-family: 'Outfit';
-      src: url('./_shared/fonts/Outfit-Regular.ttf') format('truetype');
-      font-weight: 400;
-    }
-    @font-face {
-      font-family: 'WorkSans';
-      src: url('./_shared/fonts/WorkSans-Regular.ttf') format('truetype');
-      font-weight: 400;
-    }
-    @font-face {
-      font-family: 'WorkSans';
-      src: url('./_shared/fonts/WorkSans-Bold.ttf') format('truetype');
-      font-weight: 700;
-    }
-    @font-face {
-      font-family: 'JetBrainsMono';
-      src: url('./_shared/fonts/JetBrainsMono-Regular.ttf') format('truetype');
-      font-weight: 400;
-    }
-    @font-face {
-      font-family: 'JetBrainsMono';
-      src: url('./_shared/fonts/JetBrainsMono-Bold.ttf') format('truetype');
-      font-weight: 700;
-    }
-  </style>
-
-  <style>
     :root {
       --bg: #080c16;
       --bg2: #0f1629;
@@ -59,9 +26,9 @@
       --success-glow: rgba(16,185,129,0.25);
       --danger: #ef4444;
       --danger-glow: rgba(239,68,68,0.25);
-      --font-heading: 'Outfit', 'Noto Sans CJK SC', 'WenQuanYi Micro Hei', sans-serif;
-      --font-body: 'WorkSans', 'Noto Sans CJK SC', 'WenQuanYi Micro Hei', sans-serif;
-      --font-mono: 'JetBrainsMono', 'Consolas', monospace;
+      --font-heading: 'Segoe UI', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif;
+      --font-body: 'Segoe UI', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif;
+      --font-mono: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
       --max: 1280px;
     }
 
@@ -893,9 +860,9 @@ graph TB
   </div>
 </footer>
 
-<!-- Shared JS -->
-<script src="./_shared/js/echarts.min.js"></script>
-<script src="./_shared/js/mermaid.min.js"></script>
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>
   mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose', themeVariables: {
     primaryColor: '#3b82f6',
