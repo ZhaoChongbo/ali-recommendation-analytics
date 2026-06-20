@@ -412,4 +412,131 @@
   });
   window.addEventListener('resize', function() { chart13.resize(); });
 
+  // ==========================================
+  // Chart 14: Macro Periods Comparison (三阶段对比)
+  // ==========================================
+  var chart14 = echarts.init(document.getElementById('chart-macro-periods'), null, { renderer: 'svg' });
+  chart14.setOption({
+    animation: false,
+    tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
+    legend: { data: ['日均浏览', '日均购买', '转化率'], bottom: 0, textStyle: { color: muted, fontSize: 11 }, icon: 'roundRect' },
+    grid: { left: 60, right: 60, top: 20, bottom: 40 },
+    xAxis: {
+      type: 'category',
+      data: ['蓄水期\n11.18-12.10', '爆发期\n12.11-12.13', '长尾期\n12.14-12.18'],
+      axisLabel: { color: ink2, fontSize: 11, fontWeight: 700 },
+      axisLine: { lineStyle: { color: rule } },
+      axisTick: { show: false }
+    },
+    yAxis: [
+      {
+        type: 'value', name: '人数', nameTextStyle: { color: muted, fontSize: 10 },
+        axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } },
+        axisLine: { lineStyle: { color: rule } }
+      },
+      {
+        type: 'value', name: '转化率(%)', nameTextStyle: { color: muted, fontSize: 10 },
+        axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' },
+        splitLine: { show: false },
+        axisLine: { lineStyle: { color: rule } },
+        min: 0, max: 60
+      }
+    ],
+    series: [
+      {
+        name: '日均浏览', type: 'bar', barWidth: 28, barGap: '30%',
+        data: [
+          { value: 6447, itemStyle: { color: accent } },
+          { value: 7380, itemStyle: { color: accent2 } },
+          { value: 6678, itemStyle: { color: '#6366f1' } }
+        ],
+        label: { show: true, position: 'top', color: ink2, fontSize: 10, formatter: '{c}' },
+        itemStyle: { borderRadius: [4, 4, 0, 0] }
+      },
+      {
+        name: '日均购买', type: 'bar', barWidth: 28,
+        data: [
+          { value: 1495, itemStyle: { color: '#1e40af' } },
+          { value: 2278, itemStyle: { color: '#d97706' } },
+          { value: 1593, itemStyle: { color: '#4338ca' } }
+        ],
+        label: { show: true, position: 'top', color: ink2, fontSize: 10, formatter: '{c}' },
+        itemStyle: { borderRadius: [4, 4, 0, 0] }
+      },
+      {
+        name: '转化率', type: 'line', yAxisIndex: 1,
+        data: [23.2, 30.9, 23.7],
+        lineStyle: { color: success, width: 3 },
+        itemStyle: { color: success },
+        symbol: 'circle', symbolSize: 10,
+        label: { show: true, color: success, fontSize: 11, fontWeight: 700, formatter: '{c}%', distance: 12 }
+      }
+    ]
+  });
+  window.addEventListener('resize', function() { chart14.resize(); });
+
+  // ==========================================
+  // Chart 15: Weekly Behavior Pattern (周度模式)
+  // ==========================================
+  var chart15 = echarts.init(document.getElementById('chart-weekly-pattern'), null, { renderer: 'svg' });
+  chart15.setOption({
+    animation: false,
+    tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
+    legend: { data: ['日均浏览', '日均购买', '转化率'], bottom: 0, textStyle: { color: muted, fontSize: 11 }, icon: 'roundRect' },
+    grid: { left: 50, right: 50, top: 20, bottom: 40 },
+    xAxis: {
+      type: 'category',
+      data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      axisLabel: { color: ink2, fontSize: 11 },
+      axisLine: { lineStyle: { color: rule } },
+      axisTick: { show: false }
+    },
+    yAxis: [
+      {
+        type: 'value', name: '人数', nameTextStyle: { color: muted, fontSize: 10 },
+        axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } },
+        axisLine: { lineStyle: { color: rule } }
+      },
+      {
+        type: 'value', name: '转化率(%)', nameTextStyle: { color: muted, fontSize: 10 },
+        axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' },
+        splitLine: { show: false },
+        axisLine: { lineStyle: { color: rule } },
+        min: 15, max: 35
+      }
+    ],
+    series: [
+      {
+        name: '日均浏览', type: 'bar', barWidth: 16, barGap: '20%',
+        data: [
+          { value: 6540, itemStyle: { color: accent } },
+          { value: 6480, itemStyle: { color: accent } },
+          { value: 6510, itemStyle: { color: accent } },
+          { value: 6550, itemStyle: { color: accent } },
+          { value: 6600, itemStyle: { color: accent } },
+          { value: 6700, itemStyle: { color: accent2 } },
+          { value: 7080, itemStyle: { color: accent2 } }
+        ],
+        itemStyle: { borderRadius: [4, 4, 0, 0] }
+      },
+      {
+        name: '日均购买', type: 'line', smooth: true,
+        data: [1500, 1480, 1510, 1520, 1550, 1580, 1590],
+        lineStyle: { color: success, width: 3 },
+        itemStyle: { color: success },
+        symbol: 'circle', symbolSize: 8,
+        label: { show: true, color: success, fontSize: 10, formatter: '{c}' }
+      },
+      {
+        name: '转化率', type: 'line', yAxisIndex: 1, smooth: true,
+        data: [22.9, 22.8, 23.2, 23.2, 23.5, 23.6, 22.5],
+        lineStyle: { color: danger, width: 2, type: 'dashed' },
+        itemStyle: { color: danger },
+        symbol: 'diamond', symbolSize: 8,
+        label: { show: true, color: danger, fontSize: 10, formatter: '{c}%' }
+      }
+    ]
+  });
+  window.addEventListener('resize', function() { chart15.resize(); });
+
 })();
