@@ -113,7 +113,7 @@
   chart4.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return '决策天数: ' + p[0].axisValue + '天<br/>累积用户占比: ' + p[0].value + '%'; } },
-    grid: { left: 55, right: 30, top: 20, bottom: 30 },
+    grid: { left: 80, right: 30, top: 20, bottom: 30 },
     xAxis: { type: 'category', data: ecdfDays, name: '天数', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10, interval: 4 }, axisLine: { lineStyle: { color: rule } } },
     yAxis: { type: 'value', name: '累积占比(%)', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
     series: [{
@@ -280,7 +280,7 @@
   chart10.setOption({
     animation: false,
     tooltip: { appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return p.data[3]; } },
-    grid: { left: 55, right: 30, top: 30, bottom: 30 },
+    grid: { left: 80, right: 30, top: 30, bottom: 30 },
     xAxis: { type: 'value', name: '实施难度 →', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 10 },
     yAxis: { type: 'value', name: '业务影响 →', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 10 },
     series: [{
