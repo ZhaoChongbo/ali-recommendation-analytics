@@ -29,11 +29,12 @@
       --font-heading: 'Segoe UI', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif;
       --font-body: 'Segoe UI', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif;
       --font-mono: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
-      --max: 1280px;
+      --max: 1400px;
+      --nav-h: 52px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; scroll-behavior: smooth; }
+    html { font-size: 16px; scroll-behavior: smooth; scroll-padding-top: var(--nav-h); }
 
     body {
       font-family: var(--font-body);
@@ -41,13 +42,53 @@
       background: var(--bg);
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      padding-top: var(--nav-h);
     }
+
+    /* ===== TOP NAVIGATION ===== */
+    .topnav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: var(--nav-h);
+      background: rgba(8,12,22,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 16px;
+    }
+    .topnav-inner {
+      display: flex; align-items: center; gap: 4px;
+      max-width: var(--max); width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .topnav-inner::-webkit-scrollbar { display: none; }
+    .topnav-brand {
+      font-family: var(--font-mono);
+      font-size: 0.7rem; font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      margin-right: 16px;
+      flex-shrink: 0;
+    }
+    .topnav a {
+      display: block; padding: 6px 14px;
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: color 0.15s, background 0.15s;
+      flex-shrink: 0;
+    }
+    .topnav a:hover, .topnav a.active { color: var(--ink2); background: var(--bg3); }
 
     /* ===== HERO SECTION ===== */
     .hero {
       position: relative;
       background: linear-gradient(135deg, #080c16 0%, #0c1440 30%, #0f1629 60%, #0a1030 100%);
-      padding: 80px 24px 60px;
+      padding: 72px 24px 56px;
       text-align: center;
       overflow: hidden;
     }
@@ -109,7 +150,7 @@
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      gap: 20px;
       max-width: var(--max);
       margin: 0 auto;
     }
@@ -117,7 +158,7 @@
       background: var(--bg3);
       border: 1px solid var(--rule);
       border-radius: 12px;
-      padding: 24px 20px;
+      padding: 28px 24px;
       text-align: center;
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
       position: relative;
@@ -127,7 +168,7 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 2px;
+      height: 3px;
       border-radius: 12px 12px 0 0;
     }
     .kpi-card.accent::after { background: var(--accent); }
@@ -149,7 +190,7 @@
     }
     .kpi-value {
       font-family: var(--font-heading);
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       font-weight: 700;
       color: #fff;
       line-height: 1.2;
@@ -162,14 +203,16 @@
 
     /* ===== SECTION COMMONS ===== */
     .section {
-      padding: 64px 24px;
+      padding: 72px 24px;
+      position: relative;
     }
+    .section + .section { border-top: 1px solid var(--rule); }
     .section-inner {
       max-width: var(--max);
       margin: 0 auto;
     }
     .section-header {
-      margin-bottom: 40px;
+      margin-bottom: 44px;
     }
     .section-num {
       font-family: var(--font-mono);
@@ -191,27 +234,27 @@
     .section-header .subtitle {
       font-size: 0.95rem;
       color: var(--muted);
-      max-width: 650px;
+      max-width: 700px;
     }
 
     /* ===== INSIGHT CARDS ===== */
     .insight-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 32px;
+      gap: 20px;
+      margin-bottom: 36px;
     }
     .insight-card {
       background: var(--bg3);
       border: 1px solid var(--rule);
       border-radius: 10px;
-      padding: 24px;
+      padding: 28px 24px;
       transition: border-color 0.2s;
     }
     .insight-card:hover { border-color: var(--rule2); }
     .insight-card .icon {
       font-size: 1.5rem;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       display: block;
     }
     .insight-card h4 {
@@ -219,24 +262,25 @@
       font-size: 1rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     .insight-card p {
-      font-size: 0.85rem;
+      font-size: 0.875rem;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     /* ===== TWO COLUMN ===== */
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      gap: 28px;
+      margin-bottom: 28px;
     }
     .two-col-3-7 {
       display: grid;
       grid-template-columns: 3fr 7fr;
-      gap: 24px;
+      gap: 28px;
     }
 
     /* ===== CHART FIGURE ===== */
@@ -245,32 +289,35 @@
       background: var(--bg3);
       border: 1px solid var(--rule);
       border-radius: 10px;
-      padding: 20px;
+      padding: 24px;
     }
     .chart-figure figcaption {
       font-family: var(--font-heading);
       font-size: 0.9rem;
       font-weight: 700;
       color: var(--ink2);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       letter-spacing: -0.01em;
     }
-    .chart-container { width: 100%; min-height: 360px; }
-    .chart-container.tall { min-height: 480px; }
-    .chart-container.short { min-height: 280px; }
+    .chart-container { width: 100%; min-height: 420px; }
+    .chart-container.tall { min-height: 540px; }
+    .chart-container.short { min-height: 300px; }
+    .chart-full {
+      margin-bottom: 28px;
+    }
 
     /* ===== METRIC TABLE ===== */
     .metric-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 20px;
+      margin-bottom: 28px;
     }
     .metric-item {
       background: var(--bg3);
       border: 1px solid var(--rule);
       border-radius: 8px;
-      padding: 16px;
+      padding: 20px 16px;
       text-align: center;
     }
     .metric-item .label {
@@ -283,7 +330,7 @@
     }
     .metric-item .value {
       font-family: var(--font-heading);
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 700;
       color: #fff;
     }
@@ -297,7 +344,7 @@
     .table-wrap {
       overflow-x: auto;
       overflow-y: auto;
-      max-height: 500px;
+      max-height: 460px;
       border: 1px solid var(--rule);
       border-radius: 10px;
       background: var(--bg3);
@@ -331,15 +378,15 @@
 
     /* ===== CALLOUT ===== */
     .callout {
-      border-left: 3px solid var(--accent);
+      border-left: 4px solid var(--accent);
       background: var(--bg3);
       border-radius: 0 8px 8px 0;
-      padding: 16px 20px;
-      margin: 20px 0;
+      padding: 18px 24px;
+      margin: 24px 0;
     }
     .callout.gold { border-left-color: var(--accent2); }
     .callout.success { border-left-color: var(--success); }
-    .callout p { font-size: 0.9rem; color: var(--ink2); line-height: 1.5; }
+    .callout p { font-size: 0.9rem; color: var(--ink2); line-height: 1.6; }
     .callout strong { color: #fff; }
 
     /* ===== ROI BOX ===== */
@@ -347,10 +394,11 @@
       background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(16,185,129,0.08) 100%);
       border: 1px solid var(--accent);
       border-radius: 12px;
-      padding: 28px;
+      padding: 32px 28px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      gap: 24px;
+      margin-bottom: 28px;
     }
     .roi-item {
       text-align: center;
@@ -373,14 +421,23 @@
       background: var(--bg3);
       border: 1px solid var(--rule);
       border-radius: 10px;
-      padding: 24px;
+      padding: 28px;
+      margin-bottom: 28px;
     }
     .arch-box figcaption {
       font-family: var(--font-heading);
       font-size: 0.9rem;
       font-weight: 700;
       color: var(--ink2);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
+    }
+
+    /* ===== SECTION DIVIDER ===== */
+    .section-divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rule), transparent);
+      margin: 0;
     }
 
     /* ===== FOOTER ===== */
@@ -415,12 +472,14 @@
     footer .copyright { margin-top: 32px; }
 
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 1024px) {
+    @media (max-width: 1100px) {
       .kpi-grid { grid-template-columns: repeat(2, 1fr); }
       .two-col, .two-col-3-7 { grid-template-columns: 1fr; }
       .insight-grid { grid-template-columns: 1fr; }
       .roi-box { grid-template-columns: 1fr; }
       .metric-row { grid-template-columns: repeat(2, 1fr); }
+      .chart-container { min-height: 380px; }
+      .chart-container.tall { min-height: 460px; }
     }
     @media (max-width: 640px) {
       .kpi-grid { grid-template-columns: 1fr; }
@@ -429,10 +488,27 @@
       .section { padding: 40px 16px; }
       .section-header h2 { font-size: 1.5rem; }
       .kpi-value { font-size: 1.6rem; }
+      .chart-container { min-height: 340px; }
+      .chart-container.tall { min-height: 400px; }
     }
   </style>
 </head>
 <body>
+
+<!-- ===== TOP NAV ===== -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <span class="topnav-brand">📊 ALI ANALYTICS</span>
+    <a href="#summary">核心发现</a>
+    <a href="#macro">宏观视角</a>
+    <a href="#funnel">行为漏斗</a>
+    <a href="#prediction">购买预测</a>
+    <a href="#causal">因果推断</a>
+    <a href="#business">业务策略</a>
+    <a href="#deployment">技术架构</a>
+    <a href="#limitations">改进路线</a>
+  </div>
+</nav>
 
 <!-- ===== HERO ===== -->
 <section class="hero">
@@ -471,7 +547,7 @@
 </section>
 
 <!-- ===== EXECUTIVE SUMMARY ===== -->
-<section class="section" style="padding-top: 40px;">
+<section class="section" id="summary" style="padding-top: 40px; border-top: none;">
   <div class="section-inner">
     <div class="section-header">
       <div class="section-num">Executive Summary</div>
