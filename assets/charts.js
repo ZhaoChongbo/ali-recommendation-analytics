@@ -22,7 +22,7 @@
   chart1.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
-    grid: { left: 80, right: 60, top: 20, bottom: 30 },
+    grid: { left: 90, right: 70, top: 30, bottom: 30 },
     xAxis: { type: 'value', max: 10000, axisLabel: { color: muted, fontSize: 11 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
     yAxis: {
       type: 'category',
@@ -52,7 +52,7 @@
   chart2.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return '品类 ' + p[0].name + '<br/>转化率: ' + p[0].value + '%'; } },
-    grid: { left: 80, right: 60, top: 20, bottom: 30 },
+    grid: { left: 90, right: 70, top: 30, bottom: 30 },
     xAxis: { type: 'value', max: 25, axisLabel: { color: muted, fontSize: 11, formatter: '{value}%' }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
     yAxis: {
       type: 'category',
@@ -89,11 +89,11 @@
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
     legend: { data: ['浏览', '购买', '转化率'], bottom: 0, textStyle: { color: muted, fontSize: 11 } },
-    grid: { left: 70, right: 70, top: 20, bottom: 50 },
+    grid: { left: 85, right: 85, top: 30, bottom: 50 },
     xAxis: { type: 'category', data: dates, axisLabel: { color: muted, fontSize: 10, rotate: 45, interval: 2 }, axisLine: { lineStyle: { color: rule } } },
     yAxis: [
-      { type: 'value', name: '人数', nameTextStyle: { color: muted, fontSize: 10 }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
-      { type: 'value', name: '转化率(%)', nameTextStyle: { color: muted, fontSize: 10 }, axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' }, splitLine: { show: false }, axisLine: { lineStyle: { color: rule } } }
+      { type: 'value', name: '人数', nameLocation: 'middle', nameGap: 45, nameTextStyle: { color: muted, fontSize: 10 }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
+      { type: 'value', name: '转化率(%)', nameLocation: 'middle', nameGap: 45, nameTextStyle: { color: muted, fontSize: 10 }, axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' }, splitLine: { show: false }, axisLine: { lineStyle: { color: rule } } }
     ],
     series: [
       { name: '浏览', type: 'line', data: browseData, smooth: true, lineStyle: { color: accent, width: 2 }, itemStyle: { color: accent }, symbol: 'none', areaStyle: { color: 'rgba(59,130,246,0.08)' } },
@@ -113,7 +113,7 @@
   chart4.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return '决策天数: ' + p[0].axisValue + '天<br/>累积用户占比: ' + p[0].value + '%'; } },
-    grid: { left: 80, right: 30, top: 20, bottom: 30 },
+    grid: { left: 85, right: 30, top: 30, bottom: 30 },
     xAxis: { type: 'category', data: ecdfDays, name: '天数', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10, interval: 4 }, axisLine: { lineStyle: { color: rule } } },
     yAxis: { type: 'value', name: '累积占比(%)', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
     series: [{
@@ -179,7 +179,7 @@
   chart6.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return p[0].name + '<br/>重要性: ' + (p[0].value * 100).toFixed(2) + '%'; } },
-    grid: { left: 120, right: 60, top: 10, bottom: 20 },
+    grid: { left: 130, right: 70, top: 30, bottom: 30 },
     xAxis: { type: 'value', axisLabel: { color: muted, fontSize: 10, formatter: function(v) { return (v * 100).toFixed(0) + '%'; } }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
     yAxis: { type: 'category', data: featureNames.reverse(), axisLabel: { color: ink2, fontSize: 10 }, axisLine: { lineStyle: { color: rule } }, inverse: true },
     series: [{
@@ -201,7 +201,7 @@
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
     legend: { data: ['XGBoost', 'Logistic Regression'], bottom: 0, textStyle: { color: muted, fontSize: 11 } },
-    grid: { left: 50, right: 30, top: 20, bottom: 48 },
+    grid: { left: 80, right: 30, top: 30, bottom: 48 },
     xAxis: { type: 'category', data: ['AUC', 'F1', 'AP'], axisLabel: { color: ink2, fontSize: 12, fontWeight: 700 }, axisLine: { lineStyle: { color: rule } } },
     yAxis: { type: 'value', min: 0.6, max: 1.0, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
     series: [
@@ -220,7 +220,7 @@
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) {
       var d = p[0].data; return d.name + '<br/>ATE: ' + d.value[1].toFixed(2) + 'pp<br/>95% CI: [' + d.value[0].toFixed(2) + ', ' + d.value[2].toFixed(2) + ']';
     }},
-    grid: { left: 80, right: 40, top: 20, bottom: 30 },
+    grid: { left: 90, right: 50, top: 30, bottom: 30 },
     xAxis: { type: 'value', name: 'ATE (pp)', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: -5, max: 15 },
     yAxis: { type: 'category', data: ['收藏→购买', '加购→购买'], axisLabel: { color: ink2, fontSize: 12, fontWeight: 700 }, axisLine: { lineStyle: { color: rule } } },
     series: [
@@ -259,7 +259,7 @@
   chart9.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
-    grid: { left: 140, right: 40, top: 20, bottom: 30 },
+    grid: { left: 150, right: 50, top: 30, bottom: 30 },
     xAxis: { type: 'value', name: 'ATE (pp)', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 12 },
     yAxis: { type: 'category', data: ['卡尺0.02+有放回', '卡尺0.02+无放回', '卡尺0.01+有放回', '卡尺0.01+无放回'], axisLabel: { color: ink2, fontSize: 10 }, axisLine: { lineStyle: { color: rule } } },
     series: [{
@@ -280,7 +280,7 @@
   chart10.setOption({
     animation: false,
     tooltip: { appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return p.data[3]; } },
-    grid: { left: 80, right: 30, top: 30, bottom: 30 },
+    grid: { left: 85, right: 30, top: 30, bottom: 30 },
     xAxis: { type: 'value', name: '实施难度 →', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 10 },
     yAxis: { type: 'value', name: '业务影响 →', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 10 },
     series: [{
@@ -335,16 +335,10 @@
   // ==========================================
   var chart12 = echarts.init(document.getElementById('chart-roadmap'), null, { renderer: 'svg' });
   var ganttTasks = ['Phase 1: 商品属性特征', 'Phase 2: 在线学习', 'Phase 3: AB实验', 'Phase 4: 全量上线'];
-  var ganttData = [
-    { name: 'Phase 1', value: [0, 3], itemStyle: { color: accent } },
-    { name: 'Phase 2', value: [2, 5], itemStyle: { color: accent2 } },
-    { name: 'Phase 3', value: [4, 8], itemStyle: { color: success } },
-    { name: 'Phase 4', value: [7, 10], itemStyle: { color: danger } }
-  ];
   chart12.setOption({
     animation: false,
     tooltip: { appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return p.name + '<br/>周期: 第' + p.value[0] + '周 - 第' + p.value[1] + '周'; } },
-    grid: { left: 140, right: 30, top: 20, bottom: 30 },
+    grid: { left: 150, right: 30, top: 30, bottom: 30 },
     xAxis: { type: 'value', name: '周次', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 12 },
     yAxis: { type: 'category', data: ganttTasks.reverse(), axisLabel: { color: ink2, fontSize: 10 }, axisLine: { lineStyle: { color: rule } } },
     series: [{
@@ -419,8 +413,7 @@
   chart14.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
-    legend: { data: ['日均浏览', '日均购买', '转化率'], bottom: 0, textStyle: { color: muted, fontSize: 11 }, icon: 'roundRect' },
-    grid: { left: 60, right: 60, top: 20, bottom: 48 },
+    grid: { left: 85, right: 85, top: 30, bottom: 48 },
     xAxis: {
       type: 'category',
       data: ['蓄水期\n11.18-12.10', '爆发期\n12.11-12.13', '长尾期\n12.14-12.18'],
@@ -430,12 +423,12 @@
     },
     yAxis: [
       {
-        type: 'value', name: '人数', nameTextStyle: { color: muted, fontSize: 10 },
+        type: 'value', name: '人数', nameLocation: 'middle', nameGap: 45, nameTextStyle: { color: muted, fontSize: 10 },
         axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } },
         axisLine: { lineStyle: { color: rule } }
       },
       {
-        type: 'value', name: '转化率(%)', nameTextStyle: { color: muted, fontSize: 10 },
+        type: 'value', name: '转化率(%)', nameLocation: 'middle', nameGap: 45, nameTextStyle: { color: muted, fontSize: 10 },
         axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' },
         splitLine: { show: false },
         axisLine: { lineStyle: { color: rule } },
@@ -482,8 +475,7 @@
   chart15.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
-    legend: { data: ['日均浏览', '日均购买', '转化率'], bottom: 0, textStyle: { color: muted, fontSize: 11 }, icon: 'roundRect', itemGap: 12 },
-    grid: { left: 50, right: 50, top: 20, bottom: 56 },
+    grid: { left: 85, right: 85, top: 30, bottom: 56 },
     xAxis: {
       type: 'category',
       data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
@@ -493,12 +485,12 @@
     },
     yAxis: [
       {
-        type: 'value', name: '人数', nameTextStyle: { color: muted, fontSize: 10 },
+        type: 'value', name: '人数', nameLocation: 'middle', nameGap: 45, nameTextStyle: { color: muted, fontSize: 10 },
         axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } },
         axisLine: { lineStyle: { color: rule } }
       },
       {
-        type: 'value', name: '转化率(%)', nameTextStyle: { color: muted, fontSize: 10 },
+        type: 'value', name: '转化率(%)', nameLocation: 'middle', nameGap: 45, nameTextStyle: { color: muted, fontSize: 10 },
         axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' },
         splitLine: { show: false },
         axisLine: { lineStyle: { color: rule } },
