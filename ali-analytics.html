@@ -1036,14 +1036,14 @@ graph TB
 <!-- JS: multi-CDN fallback + ordered loading -->
 <script>
 (function(){
-  function loadScript(src, onload, fallback) {
+  function loadScript(src, onload, onfallback) {
     var s = document.createElement('script');
     s.src = src;
     if (onload) s.onload = onload;
     s.onerror = function() {
-      if (fallback) {
+      if (onfallback) {
         console.warn('Failed to load ' + src + ', trying fallback...');
-        loadScript(fallback, onload, null);
+        onfallback();
       } else {
         console.error('All CDN attempts failed for: ' + src);
       }
@@ -1057,10 +1057,15 @@ graph TB
     document.head.appendChild(cs);
   }
 
+  function tryJsdelivrEcharts() {
+    loadScript('https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js', loadChartsJS, tryLocalEcharts);
+  }
+  function tryLocalEcharts() {
+    loadScript('assets/echarts.min.js', loadChartsJS);
+  }
+
   // ECharts: bootcdn → jsdelivr → local, THEN load charts.js
-  loadScript('https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js', loadChartsJS,
-    function(){ loadScript('https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js', loadChartsJS,
-      function(){ loadScript('assets/echarts.min.js', loadChartsJS, null); }); });
+  loadScript('https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js', loadChartsJS, tryJsdelivrEcharts);
 
   // Mermaid: bootcdn → jsdelivr → local
   function initMermaid() {
@@ -1071,10 +1076,14 @@ graph TB
       }});
     }
   }
+  function tryJsdelivrMermaid() {
+    loadScript('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js', initMermaid, tryLocalMermaid);
+  }
+  function tryLocalMermaid() {
+    loadScript('assets/mermaid.min.js', initMermaid);
+  }
   setTimeout(function(){
-    loadScript('https://cdn.bootcdn.net/ajax/libs/mermaid/10.9.0/mermaid.min.js', initMermaid,
-      function(){ loadScript('https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js', initMermaid,
-        function(){ loadScript('assets/mermaid.min.js', initMermaid, null); }); });
+    loadScript('https://cdn.bootcdn.net/ajax/libs/mermaid/10.9.0/mermaid.min.js', initMermaid, tryJsdelivrMermaid);
   }, 500);
 })();
 </script>
