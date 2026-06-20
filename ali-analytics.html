@@ -500,7 +500,6 @@
   <div class="topnav-inner">
     <span class="topnav-brand">📊 ALI ANALYTICS</span>
     <a href="#summary">核心发现</a>
-    <a href="#macro">宏观视角</a>
     <a href="#funnel">行为漏斗</a>
     <a href="#prediction">购买预测</a>
     <a href="#causal">因果推断</a>
@@ -574,110 +573,13 @@
   </div>
 </section>
 
-<!-- ===== SECTION 0: MACRO ===== -->
-<section class="section" id="macro" style="background: var(--bg2);">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-num">Section 00 — 宏观视角</div>
-      <h2>双十二S级大促效应与宏观环境影响</h2>
-      <p class="subtitle">数据窗口恰逢双十二（12.12），S级大促对用户行为产生结构性影响——不剥离大促效应，所有分析结论都可能失真。</p>
-    </div>
-
-    <!-- 0.1 Period Segmentation -->
-    <div class="two-col" style="margin-bottom: 24px;">
-      <div class="chart-figure">
-        <figcaption>三阶段关键指标对比</figcaption>
-        <div id="chart-macro-periods" class="chart-container"></div>
-      </div>
-      <div class="chart-figure">
-        <figcaption>周度行为模式（周一至周日）</figcaption>
-        <div id="chart-weekly-pattern" class="chart-container"></div>
-      </div>
-    </div>
-
-    <!-- 0.2 Key Insights -->
-    <div class="insight-grid" style="margin-bottom: 24px;">
-      <div class="insight-card">
-        <span class="icon">📅</span>
-        <h4>大促前蓄水期（11.18–12.10）</h4>
-        <p>日均浏览 6,447 人，日均购买 1,495 人，转化率 23.2%。12.10-12.11 浏览激增至 6,649/6,892 但转化率骤降至 21.7%/21.0%——<strong>用户"加购等大促"的典型蓄水行为</strong>。</p>
-      </div>
-      <div class="insight-card">
-        <span class="icon">🔥</span>
-        <h4>大促爆发期（12.11–12.13）</h4>
-        <p>12.12 当日购买 3,897 人，转化率 50.49%，<strong>分别是日常均值的 2.55 倍和 2.16 倍</strong>。浏览峰值 7,718 人。12.13 购买迅速回落至 1,549 人——典型的"脉冲式"消费。</p>
-      </div>
-      <div class="insight-card">
-        <span class="icon">📉</span>
-        <h4>大促后长尾期（12.14–12.18）</h4>
-        <p>日均购买 1,593 人，转化率 23.7%，基本恢复至大促前水平。但浏览仍维持在 6,678 人/天（略高于日常），<strong>说明大促唤醒的流量有部分留存</strong>。</p>
-      </div>
-    </div>
-
-    <!-- 0.3 Structural Impact -->
-    <div class="callout gold" style="margin-bottom: 20px;">
-      <p><strong>⚠️ 大促对模型的致命影响：</strong>数据集的 31 天中有 23 天（74%）处于大促前/中，行为模式与日常存在系统偏差。T+1 预测标签（12.19）是大促后第 7 天，用户预算可能已被大促消耗——<strong>模型学到的是"大促月"的行为规律，而非"日常"规律</strong>。建议后续引入促销日历特征（距大促天数、大促后恢复天数）以提升模型泛化能力。</p>
-    </div>
-
-    <!-- 0.4 Macro Factors Table -->
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>宏观因素</th>
-            <th>数据表现</th>
-            <th>对分析的影响</th>
-            <th>处理建议</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>双十二大促</strong></td>
-            <td>转化率 2.16× 飙升，购买 2.55× 飙升</td>
-            <td class="highlight">行为模式结构性偏移，模型泛化受限</td>
-            <td>引入促销日历特征；按大促前/中/后分段建模</td>
-          </tr>
-          <tr>
-            <td><strong>周末效应</strong></td>
-            <td>周日浏览 +8.3%，购买 +6.1%</td>
-            <td>周末流量自然偏高，需区分于大促效应</td>
-            <td>添加 day_of_week 特征；使用周末调整因子</td>
-          </tr>
-          <tr>
-            <td><strong>月末效应</strong></td>
-            <td>11.30 前后购买无明显波动</td>
-            <td>本数据集月末效应不显著</td>
-            <td>不作为特征引入</td>
-          </tr>
-          <tr>
-            <td><strong>12月电商旺季</strong></td>
-            <td>全月购买率 88.9%，远超常规电商</td>
-            <td>样本本身是"购物活跃用户"，结论外推需谨慎</td>
-            <td>明确样本局限性；标注"活跃用户"场景</td>
-          </tr>
-          <tr>
-            <td><strong>移动端特有</strong></td>
-            <td>碎片化浏览，决策周期中位数 2 天</td>
-            <td>PC端策略不可直接迁移</td>
-            <td>单独分析移动端行为特征</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="callout" style="margin-top: 20px;">
-      <p><strong>💡 业务启示：</strong>大促前 2 天（12.10-12.11）是"蓄水黄金窗口"——浏览高涨但转化率低，此时推送加购引导（而非直接促购）ROI 最高，因为因果推断已证明加购→购买有 +6.76pp 的因果效应。大促后 3 天（12.13-12.15）适合做"错峰购买"推送，触达被大促价格劝退的预算敏感用户。</p>
-    </div>
-  </div>
-</section>
-
 <!-- ===== SECTION 1: FUNNEL ===== -->
 <section class="section" id="funnel">
   <div class="section-inner">
     <div class="section-header">
-      <div class="section-num">Section 01</div>
+      <div class="section-num">Section 01 — 行为分析</div>
       <h2>用户行为漏斗分析</h2>
-      <p class="subtitle">从行为覆盖到品类转化，从决策周期到双12效应，层层递进揭示用户行为规律。</p>
+      <p class="subtitle">从行为覆盖到品类转化，从决策周期到周期性因素，层层递进揭示用户行为规律。数据窗口横跨双十二大促，所有分析均标注大促效应的影响。</p>
     </div>
 
     <!-- 1.1 Behavior Coverage -->
@@ -700,7 +602,19 @@
       </div>
     </div>
 
-    <!-- 1.3 Decision Cycle -->
+    <!-- 1.3 大促阶段与周期性因素 -->
+    <div class="two-col" style="margin-bottom: 24px;">
+      <div class="chart-figure">
+        <figcaption>三阶段关键指标对比（蓄水→爆发→长尾）</figcaption>
+        <div id="chart-macro-periods" class="chart-container"></div>
+      </div>
+      <div class="chart-figure">
+        <figcaption>周度行为模式（周一至周日）</figcaption>
+        <div id="chart-weekly-pattern" class="chart-container"></div>
+      </div>
+    </div>
+
+    <!-- 1.4 Decision Cycle -->
     <div class="two-col" style="margin-bottom: 24px;">
       <div class="chart-figure">
         <figcaption>用户决策周期 ECDF（首次交互→首次购买）</figcaption>
@@ -712,9 +626,25 @@
       </div>
     </div>
 
-    <!-- 1.4 Key Insights -->
+    <!-- 1.5 宏观因素速查 -->
+    <div class="table-wrap" style="margin-bottom: 24px;">
+      <table>
+        <thead>
+          <tr><th>宏观因素</th><th>数据表现</th><th>对分析的影响</th><th>处理建议</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>双十二大促</strong></td><td>转化率 2.16×，购买 2.55×</td><td class="highlight">行为模式结构性偏移</td><td>引入促销日历特征；分段建模</td></tr>
+          <tr><td><strong>周末效应</strong></td><td>周日浏览 +8.3%，购买 +6.1%</td><td>周末流量自然偏高</td><td>添加 day_of_week 特征</td></tr>
+          <tr><td><strong>月末效应</strong></td><td>11.30 前后无明显波动</td><td>本数据集不显著</td><td>不作为特征引入</td></tr>
+          <tr><td><strong>12月电商旺季</strong></td><td>全月购买率 88.9%</td><td>样本为"活跃用户"，结论外推需谨慎</td><td>标注"活跃用户"场景</td></tr>
+          <tr><td><strong>移动端特有</strong></td><td>碎片化浏览，决策周期中位数 2天</td><td>PC端策略不可直接迁移</td><td>单独分析移动端特征</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 1.6 Key Insights -->
     <div class="callout">
-      <p><strong>关键洞察：</strong>双12当日转化率 50.49%，是日常均值（23.4%）的 2.2 倍。大促前浏览激增但不转化（12.10-12.11 转化率降至 21%），说明用户存在明显的"等待大促"心态。品类 1863 和 6344 转化率最高（~20%），应作为重点推荐品类。</p>
+      <p><strong>关键洞察：</strong>双12当日转化率 50.49%，是日常均值（23.4%）的 2.2 倍。大促前 2 天浏览激增但转化率骤降至 21%——用户存在明显的"加购等大促"蓄水行为。品类 1863 和 6344 转化率最高（~20%），应作为重点推荐品类。大促后流量有部分留存（日均浏览 +3.6%），可作为长期运营的流量入口。</p>
     </div>
   </div>
 </section>
@@ -723,9 +653,9 @@
 <section class="section" id="prediction" style="background: var(--bg2);">
   <div class="section-inner">
     <div class="section-header">
-      <div class="section-num">Section 02</div>
+      <div class="section-num">Section 02 — 预测建模</div>
       <h2>T+1 购买预测模型</h2>
-      <p class="subtitle">基于用户 31 天行为数据，预测 12月19日 是否购买商品子集 P。XGBoost + 四层特征工程 + 分层5折交叉验证。</p>
+      <p class="subtitle">基于用户 31 天行为数据，预测 12月19日 是否购买商品子集 P。XGBoost + 四层特征工程 + 分层5折交叉验证。注意：训练窗口 74% 处于大促前后，模型反映的是"大促月"行为规律。</p>
     </div>
 
     <!-- 2.1 CV Results -->
@@ -786,6 +716,10 @@
     </div>
 
     <div class="callout gold" style="margin-top: 20px;">
+      <p><strong>⚠️ 数据窗口局限性：</strong>31 天训练窗口中有 23 天（74%）处于大促前/中，行为模式与日常存在系统偏差。T+1 预测标签（12.19）是大促后第 7 天，用户预算可能已被大促消耗——<strong>模型学到的是"大促月"行为规律，而非日常规律</strong>。建议后续引入促销日历特征（距大促天数、大促后恢复天数），并在非大促月份数据上验证模型泛化能力。</p>
+    </div>
+
+    <div class="callout" style="margin-top: 20px;">
       <p><strong>建模要点：</strong>使用 12.18 单日作为标签（避免多日标签的数据泄漏），5折分层CV确保正负样本比例一致，scale_pos_weight 处理类别不平衡（1:5）。68.1% 预测正样本观察期无交互——冷启动问题需引入商品属性侧特征（价格、品牌、类目深度）。</p>
     </div>
   </div>
@@ -795,9 +729,9 @@
 <section class="section" id="causal">
   <div class="section-inner">
     <div class="section-header">
-      <div class="section-num">Section 03</div>
+      <div class="section-num">Section 03 — 因果推断</div>
       <h2>因果推断：行为→购买</h2>
-      <p class="subtitle">PSM（倾向性得分匹配）+ 时间分割设计 + 4条件敏感性分析，回答"加购/收藏是否真的能提升购买概率"。</p>
+      <p class="subtitle">PSM（倾向性得分匹配）+ 时间分割设计 + 4条件敏感性分析，回答"加购/收藏是否真的能提升购买概率"。因果效应在大促场景下可能被放大，策略落地时需区分大促期与日常期。</p>
     </div>
 
     <div class="two-col" style="margin-bottom: 24px;">
@@ -820,6 +754,10 @@
     <div class="callout success">
       <p><strong>因果结论：</strong>加购行为对购买的因果效应为 +6.76pp（95% CI: [2.35, 10.58]，p&lt;0.01），在4种敏感性分析（卡尺0.01/0.02 × 有放回/无放回匹配）下均稳健。收藏行为效应不显著（+4.11pp, CI包含0），<strong>引导用户加购比引导收藏更有效</strong>。研究设计：Treatment期（11.18-12.03）→ Outcome期（12.04-12.18），排除Treatment期购买用户，SMD均&lt;0.1。</p>
     </div>
+
+    <div class="callout" style="margin-top: 20px;">
+      <p><strong>💡 大促场景下的策略启示：</strong>大促前 2 天（12.10-12.11）是"蓄水黄金窗口"——浏览高涨但转化率低，此时推送加购引导（而非直接促购）ROI 最高，因为因果推断已证明加购→购买有 +6.76pp 的因果效应。大促后 3 天（12.13-12.15）适合做"错峰购买"推送，触达被大促价格劝退的预算敏感用户。因果效应在大促场景下可能被促销折扣放大，建议在AB实验中分别评估大促期与日常期的ATE。</p>
+    </div>
   </div>
 </section>
 
@@ -827,7 +765,7 @@
 <section class="section" id="business" style="background: var(--bg2);">
   <div class="section-inner">
     <div class="section-header">
-      <div class="section-num">Section 04</div>
+      <div class="section-num">Section 04 — 业务策略</div>
       <h2>业务价值与落地策略</h2>
       <p class="subtitle">从分析到行动——量化业务影响，设计可落地的推荐策略与部署架构。</p>
     </div>
@@ -919,7 +857,7 @@
 <section class="section" id="deployment">
   <div class="section-inner">
     <div class="section-header">
-      <div class="section-num">Section 05</div>
+      <div class="section-num">Section 05 — 技术架构</div>
       <h2>技术架构与部署方案</h2>
       <p class="subtitle">从离线分析到在线推理，完整的技术栈与部署架构。</p>
     </div>
@@ -975,7 +913,7 @@ graph TB
 <section class="section" id="limitations" style="background: var(--bg2);">
   <div class="section-inner">
     <div class="section-header">
-      <div class="section-num">Section 06</div>
+      <div class="section-num">Section 06 — 改进路线</div>
       <h2>局限性与改进路线图</h2>
       <p class="subtitle">坦诚面对当前分析的边界，明确下一步改进方向。</p>
     </div>
