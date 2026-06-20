@@ -89,11 +89,11 @@
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
     legend: { data: ['浏览', '购买', '转化率'], bottom: 0, textStyle: { color: muted, fontSize: 11 } },
-    grid: { left: 60, right: 60, top: 20, bottom: 40 },
-    xAxis: { type: 'category', data: dates, axisLabel: { color: muted, fontSize: 10, rotate: 45 }, axisLine: { lineStyle: { color: rule } } },
+    grid: { left: 70, right: 70, top: 20, bottom: 50 },
+    xAxis: { type: 'category', data: dates, axisLabel: { color: muted, fontSize: 10, rotate: 45, interval: 2 }, axisLine: { lineStyle: { color: rule } } },
     yAxis: [
-      { type: 'value', name: '人数', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
-      { type: 'value', name: '转化率(%)', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' }, splitLine: { show: false }, axisLine: { lineStyle: { color: rule } } }
+      { type: 'value', name: '人数', nameTextStyle: { color: muted, fontSize: 10 }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
+      { type: 'value', name: '转化率(%)', nameTextStyle: { color: muted, fontSize: 10 }, axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' }, splitLine: { show: false }, axisLine: { lineStyle: { color: rule } } }
     ],
     series: [
       { name: '浏览', type: 'line', data: browseData, smooth: true, lineStyle: { color: accent, width: 2 }, itemStyle: { color: accent }, symbol: 'none', areaStyle: { color: 'rgba(59,130,246,0.08)' } },
@@ -179,7 +179,7 @@
   chart6.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return p[0].name + '<br/>重要性: ' + (p[0].value * 100).toFixed(2) + '%'; } },
-    grid: { left: 120, right: 40, top: 10, bottom: 20 },
+    grid: { left: 120, right: 60, top: 10, bottom: 20 },
     xAxis: { type: 'value', axisLabel: { color: muted, fontSize: 10, formatter: function(v) { return (v * 100).toFixed(0) + '%'; } }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
     yAxis: { type: 'category', data: featureNames.reverse(), axisLabel: { color: ink2, fontSize: 10 }, axisLine: { lineStyle: { color: rule } }, inverse: true },
     series: [{
@@ -201,7 +201,7 @@
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
     legend: { data: ['XGBoost', 'Logistic Regression'], bottom: 0, textStyle: { color: muted, fontSize: 11 } },
-    grid: { left: 50, right: 30, top: 20, bottom: 40 },
+    grid: { left: 50, right: 30, top: 20, bottom: 48 },
     xAxis: { type: 'category', data: ['AUC', 'F1', 'AP'], axisLabel: { color: ink2, fontSize: 12, fontWeight: 700 }, axisLine: { lineStyle: { color: rule } } },
     yAxis: { type: 'value', min: 0.6, max: 1.0, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
     series: [
@@ -420,7 +420,7 @@
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
     legend: { data: ['日均浏览', '日均购买', '转化率'], bottom: 0, textStyle: { color: muted, fontSize: 11 }, icon: 'roundRect' },
-    grid: { left: 60, right: 60, top: 20, bottom: 40 },
+    grid: { left: 60, right: 60, top: 20, bottom: 48 },
     xAxis: {
       type: 'category',
       data: ['蓄水期\n11.18-12.10', '爆发期\n12.11-12.13', '长尾期\n12.14-12.18'],
@@ -483,7 +483,7 @@
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
     legend: { data: ['日均浏览', '日均购买', '转化率'], bottom: 0, textStyle: { color: muted, fontSize: 11 }, icon: 'roundRect' },
-    grid: { left: 50, right: 50, top: 20, bottom: 40 },
+    grid: { left: 50, right: 50, top: 20, bottom: 48 },
     xAxis: {
       type: 'category',
       data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
