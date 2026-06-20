@@ -482,8 +482,8 @@
   chart15.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
-    legend: { data: ['日均浏览', '日均购买', '转化率'], bottom: 0, textStyle: { color: muted, fontSize: 11 }, icon: 'roundRect' },
-    grid: { left: 50, right: 50, top: 20, bottom: 48 },
+    legend: { data: ['日均浏览', '日均购买', '转化率'], bottom: 0, textStyle: { color: muted, fontSize: 11 }, icon: 'roundRect', itemGap: 12 },
+    grid: { left: 50, right: 50, top: 20, bottom: 56 },
     xAxis: {
       type: 'category',
       data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
@@ -517,7 +517,8 @@
           { value: 6700, itemStyle: { color: accent2 } },
           { value: 7080, itemStyle: { color: accent2 } }
         ],
-        itemStyle: { borderRadius: [4, 4, 0, 0] }
+        itemStyle: { borderRadius: [4, 4, 0, 0] },
+        label: { show: true, position: 'top', color: ink2, fontSize: 9, formatter: '{c}' }
       },
       {
         name: '日均购买', type: 'line', smooth: true,
