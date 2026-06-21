@@ -1,5 +1,6 @@
 // assets/charts.js — Ali Mobile Recommendation Analytics Dashboard
-// All charts use ECharts with SVG renderer, colors derived from CSS variables
+// ALL data derived from actual analysis of 12.2M event records (10,000 users × 31 days)
+// Source: 阿里天池移动推荐算法数据集, 2014.11.18–12.18
 (function() {
   var style = getComputedStyle(document.documentElement);
   var accent = style.getPropertyValue('--accent').trim();
@@ -17,6 +18,7 @@
 
   // ==========================================
   // Chart 1: User Behavior Coverage (Funnel)
+  // Data: funnel_user_level.csv
   // ==========================================
   var chart1 = echarts.init(document.getElementById('chart-funnel-coverage'), null, { renderer: 'svg' });
   chart1.setOption({
@@ -46,7 +48,8 @@
   window.addEventListener('resize', function() { chart1.resize(); });
 
   // ==========================================
-  // Chart 2: Category Conversion (Top5)
+  // Chart 2: Category Conversion Top 5
+  // Data: funnel_by_category.csv (sorted by 浏览→购买转化率 desc)
   // ==========================================
   var chart2 = echarts.init(document.getElementById('chart-category-conversion'), null, { renderer: 'svg' });
   chart2.setOption({
@@ -78,6 +81,7 @@
 
   // ==========================================
   // Chart 3: Daily Browse/Purchase & Conversion
+  // Data: funnel_daily.csv (31 days, real values)
   // ==========================================
   var dates = ['11/18','11/19','11/20','11/21','11/22','11/23','11/24','11/25','11/26','11/27','11/28','11/29','11/30','12/01','12/02','12/03','12/04','12/05','12/06','12/07','12/08','12/09','12/10','12/11','12/12','12/13','12/14','12/15','12/16','12/17','12/18'];
   var browseData = [6340,6418,6332,6275,6184,6371,6511,6346,6353,6357,6185,6220,6378,6543,6547,6581,6528,6364,6438,6420,6560,6563,6649,6892,7718,6774,6668,6784,6726,6636,6576];
@@ -98,13 +102,15 @@
     series: [
       { name: '浏览', type: 'line', data: browseData, smooth: true, lineStyle: { color: accent, width: 2 }, itemStyle: { color: accent }, symbol: 'none', areaStyle: { color: 'rgba(59,130,246,0.08)' } },
       { name: '购买', type: 'line', data: purchaseData, smooth: true, lineStyle: { color: accent2, width: 2 }, itemStyle: { color: accent2 }, symbol: 'none' },
-      { name: '转化率', type: 'line', yAxisIndex: 1, data: convData, smooth: true, lineStyle: { color: success, width: 2, type: 'dashed' }, itemStyle: { color: success }, symbol: 'circle', symbolSize: 4 }
+      { name: '转化率', type: 'line', yAxisIndex: 1, data: convData, smooth: true, lineStyle: { color: success, width: 2, type: 'dashed' }, itemStyle: { color: success }, symbol: 'circle', symbolSize: 4 },
+      { type: 'line', data: [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,7718,null,null,null,null,null,null], symbol: 'circle', symbolSize: 12, itemStyle: { color: 'transparent', borderColor: danger, borderWidth: 2 }, label: { show: true, position: 'top', formatter: '12.12 大促', color: danger, fontSize: 10, fontWeight: 700, distance: 10 }, lineStyle: { opacity: 0 } }
     ]
   });
   window.addEventListener('resize', function() { chart3.resize(); });
 
   // ==========================================
   // Chart 4: Decision Cycle ECDF
+  // Data: purchase_time_distribution.csv
   // ==========================================
   var ecdfDays = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
   var ecdfVals = [34.58,45.89,52.55,59.12,64.89,69.51,73.01,76.43,79.18,81.14,83.44,85.40,87.62,89.39,90.55,92.06,92.77,93.92,95.07,95.65,96.49,97.43,97.83,98.36,98.98,99.16,99.29,99.56,99.60,99.82,100.00];
@@ -134,43 +140,50 @@
   window.addEventListener('resize', function() { chart4.resize(); });
 
   // ==========================================
-  // Chart 5: User Segment Radar
+  // Chart 5: Category Scatter (浏览 vs 转化率)
+  // Data: funnel_by_category.csv — real data, 8916 categories
+  // Replaces fabricated user segment radar
   // ==========================================
   var chart5 = echarts.init(document.getElementById('chart-user-segment'), null, { renderer: 'svg' });
   chart5.setOption({
     animation: false,
-    tooltip: { appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
-    legend: { data: ['新用户', '老用户', '高频用户', '低频用户'], bottom: 0, textStyle: { color: muted, fontSize: 10 } },
-    radar: {
-      center: ['50%', '45%'],
-      radius: '65%',
-      indicator: [
-        { name: '浏览活跃度', max: 100 },
-        { name: '加购倾向', max: 100 },
-        { name: '收藏倾向', max: 100 },
-        { name: '购买转化', max: 100 },
-        { name: '品类广度', max: 100 }
-      ],
-      axisName: { color: muted, fontSize: 10 },
-      splitArea: { areaStyle: { color: [bg3, bg4] } },
-      splitLine: { lineStyle: { color: rule } },
-      axisLine: { lineStyle: { color: rule } }
-    },
+    tooltip: { appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return '品类 ' + p.data[2] + '<br/>浏览: ' + p.data[0] + '<br/>转化率: ' + p.data[1] + '%'; } },
+    grid: { left: 85, right: 30, top: 30, bottom: 30 },
+    xAxis: { type: 'value', name: '浏览次数', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
+    yAxis: { type: 'value', name: '转化率(%)', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
     series: [{
-      type: 'radar',
+      type: 'scatter',
+      symbolSize: function(val) { return Math.max(3, Math.min(12, val[0] / 400)); },
       data: [
-        { value: [85, 35, 30, 25, 40], name: '新用户', lineStyle: { color: accent }, areaStyle: { color: 'rgba(59,130,246,0.15)' }, itemStyle: { color: accent } },
-        { value: [55, 70, 68, 65, 75], name: '老用户', lineStyle: { color: success }, areaStyle: { color: 'rgba(16,185,129,0.15)' }, itemStyle: { color: success } },
-        { value: [90, 78, 72, 75, 80], name: '高频用户', lineStyle: { color: accent2 }, areaStyle: { color: 'rgba(245,158,11,0.15)' }, itemStyle: { color: accent2 } },
-        { value: [30, 25, 22, 20, 35], name: '低频用户', lineStyle: { color: muted }, areaStyle: { color: 'rgba(100,116,139,0.1)' }, itemStyle: { color: muted } }
+        [5995, 20.88, '1863', accent],
+        [5617, 10.04, '13230', accent + '66'],
+        [5497, 11.41, '5027', accent + '66'],
+        [5310, 12.26, '5399', accent + '66'],
+        [5281, 13.22, '6513', accent + '66'],
+        [5277, 11.46, '5894', accent + '66'],
+        [4967, 19.21, '5232', accent2],
+        [4712, 12.42, '11279', accent + '66'],
+        [4594, 5.62, '6000', muted],
+        [4551, 9.07, '2825', muted],
+        [4350, 5.94, '3007', muted],
+        [4140, 8.19, '5455', muted],
+        [3980, 7.52, '8293', muted],
+        [3870, 8.83, '9031', muted],
+        [3650, 6.37, '4388', muted]
       ],
-      symbol: 'circle', symbolSize: 4
+      itemStyle: { opacity: 0.7 },
+      label: { show: true, position: 'top', color: ink2, fontSize: 9, formatter: function(p) { return p.data[2]; }, minMargin: 2 }
+    }, {
+      type: 'scatter',
+      symbolSize: 0,
+      markLine: { silent: true, symbol: 'none', lineStyle: { color: rule, type: 'dashed', width: 1 }, label: { color: muted, fontSize: 10 }, data: [{ yAxis: 23.3, label: { formatter: '全品类均值: 23.3%' } }] }
     }]
   });
   window.addEventListener('resize', function() { chart5.resize(); });
 
   // ==========================================
   // Chart 6: Feature Importance
+  // Data: feature_importance.csv (XGBoost)
   // ==========================================
   var featureNames = ['商品热度', '商品加购数', '商品浏览数', '有无交互', '用户-商品加购', '用户-商品浏览', '最近活跃天数', '是否加购过', '是否收藏过', '商品购买率'];
   var featureVals = [0.1382, 0.1246, 0.1204, 0.0880, 0.0814, 0.0578, 0.0542, 0.0346, 0.0337, 0.0301];
@@ -195,6 +208,7 @@
 
   // ==========================================
   // Chart 7: Model Comparison (XGBoost vs LR)
+  // Data: model_metrics.csv + cv_results.csv
   // ==========================================
   var chart7 = echarts.init(document.getElementById('chart-model-comparison'), null, { renderer: 'svg' });
   chart7.setOption({
@@ -203,16 +217,17 @@
     legend: { data: ['XGBoost', 'Logistic Regression'], bottom: 0, textStyle: { color: muted, fontSize: 11 } },
     grid: { left: 80, right: 30, top: 30, bottom: 48 },
     xAxis: { type: 'category', data: ['AUC', 'F1', 'AP'], axisLabel: { color: ink2, fontSize: 12, fontWeight: 700 }, axisLine: { lineStyle: { color: rule } } },
-    yAxis: { type: 'value', min: 0.6, max: 1.0, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
+    yAxis: { type: 'value', min: 0.4, max: 1.0, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
     series: [
-      { name: 'XGBoost', type: 'bar', data: [0.9448, 0.7475, 0.8621], barWidth: 24, itemStyle: { color: accent, borderRadius: [4, 4, 0, 0] }, label: { show: true, position: 'top', color: ink2, fontSize: 11, fontFamily: 'JetBrainsMono', formatter: '{c}' } },
-      { name: 'Logistic Regression', type: 'bar', data: [0.8442, 0.6330, 0.7100], barWidth: 24, itemStyle: { color: muted, borderRadius: [4, 4, 0, 0] }, label: { show: true, position: 'top', color: muted, fontSize: 11, fontFamily: 'JetBrainsMono', formatter: '{c}' } }
+      { name: 'XGBoost', type: 'bar', data: [0.9448, 0.7453, 0.8558], barWidth: 24, itemStyle: { color: accent, borderRadius: [4, 4, 0, 0] }, label: { show: true, position: 'top', color: ink2, fontSize: 11, fontFamily: 'JetBrainsMono', formatter: '{c}' } },
+      { name: 'Logistic Regression', type: 'bar', data: [0.8442, 0.4783, 0.4932], barWidth: 24, itemStyle: { color: muted, borderRadius: [4, 4, 0, 0] }, label: { show: true, position: 'top', color: muted, fontSize: 11, fontFamily: 'JetBrainsMono', formatter: '{c}' } }
     ]
   });
   window.addEventListener('resize', function() { chart7.resize(); });
 
   // ==========================================
   // Chart 8: Forest Plot (Causal ATE)
+  // Data: causal_inference_results.csv
   // ==========================================
   var chart8 = echarts.init(document.getElementById('chart-forest-plot'), null, { renderer: 'svg' });
   chart8.setOption({
@@ -253,124 +268,33 @@
   window.addEventListener('resize', function() { chart8.resize(); });
 
   // ==========================================
-  // Chart 9: Sensitivity Analysis
+  // Chart 9: Sensitivity Analysis (4 conditions)
+  // Data: causal_inference_results.csv
   // ==========================================
   var chart9 = echarts.init(document.getElementById('chart-sensitivity'), null, { renderer: 'svg' });
   chart9.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
     grid: { left: 150, right: 50, top: 30, bottom: 30 },
-    xAxis: { type: 'value', name: 'ATE (pp)', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 12 },
-    yAxis: { type: 'category', data: ['卡尺0.02+有放回', '卡尺0.02+无放回', '卡尺0.01+有放回', '卡尺0.01+无放回'], axisLabel: { color: ink2, fontSize: 10 }, axisLine: { lineStyle: { color: rule } } },
+    xAxis: { type: 'value', name: 'ATE (pp)', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 14 },
+    yAxis: { type: 'category', data: ['有放回(卡尺0.05)', '无放回(卡尺0.05)', '有放回(卡尺0.03)', '有放回(卡尺0.10)'], axisLabel: { color: ink2, fontSize: 10 }, axisLine: { lineStyle: { color: rule } } },
     series: [{
       type: 'bar',
-      data: [6.82, 6.76, 6.65, 6.71],
+      data: [6.76, 10.70, 6.76, 6.76],
       barWidth: 18,
       itemStyle: { color: accent, borderRadius: [0, 4, 4, 0] },
       label: { show: true, position: 'right', color: ink2, fontSize: 11, fontFamily: 'JetBrainsMono', formatter: '{c} pp' },
-      markLine: { silent: true, symbol: 'none', lineStyle: { color: accent2, type: 'dashed', width: 1 }, label: { formatter: '均值: 6.74pp', color: accent2, fontSize: 10 }, data: [{ type: 'average', name: '均值' }] }
+      markLine: { silent: true, symbol: 'none', lineStyle: { color: accent2, type: 'dashed', width: 1 }, label: { formatter: '主分析: 6.76pp', color: accent2, fontSize: 10 }, data: [{ xAxis: 6.76, name: '主分析' }] }
     }]
   });
   window.addEventListener('resize', function() { chart9.resize(); });
 
   // ==========================================
-  // Chart 10: Strategy Priority Matrix
+  // Chart 10: DAG (Causal Graph)
+  // Based on real causal inference design
   // ==========================================
-  var chart10 = echarts.init(document.getElementById('chart-strategy-matrix'), null, { renderer: 'svg' });
+  var chart10 = echarts.init(document.getElementById('chart-dag'), null, { renderer: 'svg' });
   chart10.setOption({
-    animation: false,
-    tooltip: { appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return p.data[3]; } },
-    grid: { left: 85, right: 30, top: 30, bottom: 30 },
-    xAxis: { type: 'value', name: '实施难度 →', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 10 },
-    yAxis: { type: 'value', name: '业务影响 →', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 10 },
-    series: [{
-      type: 'scatter',
-      symbolSize: function(val) { return val[2] * 5; },
-      data: [
-        [2, 9, 10, '加购助推\n难度:低 影响:高', accent],
-        [4, 7, 7, '决策干预\n难度:中 影响:中高', accent2],
-        [6, 8, 8, '大促蓄水\n难度:中高 影响:高', accent2],
-        [3, 6, 6, '品类推荐\n难度:低 影响:中', success],
-        [8, 5, 5, '冷启动特征\n难度:高 影响:中', muted]
-      ],
-      itemStyle: { color: function(p) { return p.data[4]; }, opacity: 0.8 },
-      label: { show: true, position: 'top', color: ink2, fontSize: 10, fontWeight: 700, formatter: function(p) { return p.data[3].split('\n')[0]; } },
-      markArea: {
-        silent: true,
-        data: [
-          [{ xAxis: 0, yAxis: 5, itemStyle: { color: 'rgba(16,185,129,0.05)' } }, { xAxis: 5, yAxis: 10 }],
-          [{ xAxis: 5, yAxis: 5, itemStyle: { color: 'rgba(245,158,11,0.05)' } }, { xAxis: 10, yAxis: 10 }]
-        ]
-      }
-    }]
-  });
-  window.addEventListener('resize', function() { chart10.resize(); });
-
-  // ==========================================
-  // Chart 11: User Segmentation Strategy
-  // ==========================================
-  var chart11 = echarts.init(document.getElementById('chart-user-strategy'), null, { renderer: 'svg' });
-  chart11.setOption({
-    animation: false,
-    tooltip: { trigger: 'item', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: '{b}: {c} 人 ({d}%)' },
-    legend: { bottom: 0, textStyle: { color: muted, fontSize: 10 } },
-    series: [{
-      type: 'pie',
-      radius: ['45%', '75%'],
-      center: ['50%', '45%'],
-      itemStyle: { borderRadius: 4, borderColor: bg, borderWidth: 3 },
-      label: { color: ink2, fontSize: 10, formatter: '{b}\n{d}%' },
-      data: [
-        { value: 2800, name: '核心用户', itemStyle: { color: success } },
-        { value: 2200, name: '潜力用户', itemStyle: { color: accent } },
-        { value: 3100, name: '沉睡用户', itemStyle: { color: muted } },
-        { value: 1900, name: '流失预警', itemStyle: { color: danger } }
-      ]
-    }]
-  });
-  window.addEventListener('resize', function() { chart11.resize(); });
-
-  // ==========================================
-  // Chart 12: Roadmap Gantt
-  // ==========================================
-  var chart12 = echarts.init(document.getElementById('chart-roadmap'), null, { renderer: 'svg' });
-  var ganttTasks = ['Phase 1: 商品属性特征', 'Phase 2: 在线学习', 'Phase 3: AB实验', 'Phase 4: 全量上线'];
-  chart12.setOption({
-    animation: false,
-    tooltip: { appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink }, formatter: function(p) { return p.name + '<br/>周期: 第' + p.value[0] + '周 - 第' + p.value[1] + '周'; } },
-    grid: { left: 150, right: 30, top: 30, bottom: 30 },
-    xAxis: { type: 'value', name: '周次', nameTextStyle: { color: muted }, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } }, min: 0, max: 12 },
-    yAxis: { type: 'category', data: ganttTasks.reverse(), axisLabel: { color: ink2, fontSize: 10 }, axisLine: { lineStyle: { color: rule } } },
-    series: [{
-      type: 'custom',
-      renderItem: function(params, api) {
-        var catIdx = api.value(3);
-        var y = api.coord([0, catIdx])[1];
-        var xStart = api.coord([api.value(0), catIdx])[0];
-        var xEnd = api.coord([api.value(1), catIdx])[0];
-        var color = api.value(4);
-        return {
-          type: 'rect',
-          shape: { x: xStart, y: y - 10, width: xEnd - xStart, height: 20 },
-          style: { fill: color, borderRadius: 4, opacity: 0.85 }
-        };
-      },
-      data: [
-        { name: 'Phase 1', value: [0, 3, 3, accent], itemStyle: { color: accent } },
-        { name: 'Phase 2', value: [2, 5, 2, accent2], itemStyle: { color: accent2 } },
-        { name: 'Phase 3', value: [4, 8, 1, success], itemStyle: { color: success } },
-        { name: 'Phase 4', value: [7, 10, 0, danger], itemStyle: { color: danger } }
-      ],
-      encode: { x: [0, 1], y: 3 }
-    }]
-  });
-  window.addEventListener('resize', function() { chart12.resize(); });
-
-  // ==========================================
-  // Chart 13: DAG (Causal Graph)
-  // ==========================================
-  var chart13 = echarts.init(document.getElementById('chart-dag'), null, { renderer: 'svg' });
-  chart13.setOption({
     animation: false,
     tooltip: { appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
     series: [{
@@ -404,13 +328,14 @@
       emphasis: { focus: 'adjacency', lineStyle: { width: 3 } }
     }]
   });
-  window.addEventListener('resize', function() { chart13.resize(); });
+  window.addEventListener('resize', function() { chart10.resize(); });
 
   // ==========================================
-  // Chart 14: Macro Periods Comparison (三阶段对比)
+  // Chart 11: Macro Periods Comparison (三阶段对比)
+  // Data: funnel_daily.csv — real aggregation
   // ==========================================
-  var chart14 = echarts.init(document.getElementById('chart-macro-periods'), null, { renderer: 'svg' });
-  chart14.setOption({
+  var chart11 = echarts.init(document.getElementById('chart-macro-periods'), null, { renderer: 'svg' });
+  chart11.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
     grid: { left: 85, right: 85, top: 30, bottom: 48 },
@@ -432,15 +357,15 @@
         axisLabel: { color: muted, fontSize: 10, formatter: '{value}%' },
         splitLine: { show: false },
         axisLine: { lineStyle: { color: rule } },
-        min: 0, max: 60
+        min: 0, max: 40
       }
     ],
     series: [
       {
         name: '日均浏览', type: 'bar', barWidth: 28, barGap: '30%',
         data: [
-          { value: 6447, itemStyle: { color: accent } },
-          { value: 7380, itemStyle: { color: accent2 } },
+          { value: 6411, itemStyle: { color: accent } },
+          { value: 7128, itemStyle: { color: accent2 } },
           { value: 6678, itemStyle: { color: '#6366f1' } }
         ],
         label: { show: true, position: 'top', color: ink2, fontSize: 10, formatter: '{c}' },
@@ -449,16 +374,16 @@
       {
         name: '日均购买', type: 'bar', barWidth: 28,
         data: [
-          { value: 1495, itemStyle: { color: '#1e40af' } },
-          { value: 2278, itemStyle: { color: '#d97706' } },
-          { value: 1593, itemStyle: { color: '#4338ca' } }
+          { value: 1496, itemStyle: { color: '#1e40af' } },
+          { value: 2298, itemStyle: { color: '#d97706' } },
+          { value: 1581, itemStyle: { color: '#4338ca' } }
         ],
         label: { show: true, position: 'top', color: ink2, fontSize: 10, formatter: '{c}' },
         itemStyle: { borderRadius: [4, 4, 0, 0] }
       },
       {
         name: '转化率', type: 'line', yAxisIndex: 1,
-        data: [23.2, 30.9, 23.7],
+        data: [23.3, 31.5, 23.7],
         lineStyle: { color: success, width: 3 },
         itemStyle: { color: success },
         symbol: 'circle', symbolSize: 10,
@@ -466,13 +391,15 @@
       }
     ]
   });
-  window.addEventListener('resize', function() { chart14.resize(); });
+  window.addEventListener('resize', function() { chart11.resize(); });
 
   // ==========================================
-  // Chart 15: Weekly Behavior Pattern (周度模式)
+  // Chart 12: Weekly Behavior Pattern (周度模式)
+  // Data: funnel_daily.csv — real aggregation by day of week
+  // Note: 周五数据受12.12大促影响（12.12是周五），购买和转化率偏高
   // ==========================================
-  var chart15 = echarts.init(document.getElementById('chart-weekly-pattern'), null, { renderer: 'svg' });
-  chart15.setOption({
+  var chart12 = echarts.init(document.getElementById('chart-weekly-pattern'), null, { renderer: 'svg' });
+  chart12.setOption({
     animation: false,
     tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
     grid: { left: 85, right: 85, top: 30, bottom: 56 },
@@ -501,20 +428,20 @@
       {
         name: '日均浏览', type: 'bar', barWidth: 16, barGap: '20%',
         data: [
-          { value: 6540, itemStyle: { color: accent } },
-          { value: 6480, itemStyle: { color: accent } },
-          { value: 6510, itemStyle: { color: accent } },
-          { value: 6550, itemStyle: { color: accent } },
           { value: 6600, itemStyle: { color: accent } },
-          { value: 6700, itemStyle: { color: accent2 } },
-          { value: 7080, itemStyle: { color: accent2 } }
+          { value: 6504, itemStyle: { color: accent } },
+          { value: 6527, itemStyle: { color: accent } },
+          { value: 6537, itemStyle: { color: accent } },
+          { value: 6636, itemStyle: { color: accent2 } },
+          { value: 6404, itemStyle: { color: accent } },
+          { value: 6459, itemStyle: { color: accent } }
         ],
         itemStyle: { borderRadius: [4, 4, 0, 0] },
         label: { show: true, position: 'top', color: ink2, fontSize: 9, formatter: '{c}' }
       },
       {
         name: '日均购买', type: 'line', smooth: true,
-        data: [1500, 1480, 1510, 1520, 1550, 1580, 1590],
+        data: [1590, 1540, 1541, 1521, 2040, 1447, 1470],
         lineStyle: { color: success, width: 3 },
         itemStyle: { color: success },
         symbol: 'circle', symbolSize: 8,
@@ -522,14 +449,39 @@
       },
       {
         name: '转化率', type: 'line', yAxisIndex: 1, smooth: true,
-        data: [22.9, 22.8, 23.2, 23.2, 23.5, 23.6, 22.5],
+        data: [24.1, 23.7, 23.6, 23.3, 29.6, 22.6, 22.8],
         lineStyle: { color: danger, width: 2, type: 'dashed' },
         itemStyle: { color: danger },
         symbol: 'diamond', symbolSize: 8,
         label: { show: true, color: danger, fontSize: 10, formatter: '{c}%' }
+      },
+      {
+        type: 'scatter', symbolSize: 0,
+        data: [[4, 2040]],
+        markPoint: { data: [{ coord: [4, 2040], value: '12.12\n大促', symbol: 'pin', symbolSize: 36, itemStyle: { color: danger }, label: { color: danger, fontSize: 9, fontWeight: 700 } }] }
       }
     ]
   });
-  window.addEventListener('resize', function() { chart15.resize(); });
+  window.addEventListener('resize', function() { chart12.resize(); });
+
+  // ==========================================
+  // Chart 13: CV Fold Performance (5-fold CV)
+  // Data: cv_results.csv
+  // ==========================================
+  var chart13 = echarts.init(document.getElementById('chart-strategy-matrix'), null, { renderer: 'svg' });
+  chart13.setOption({
+    animation: false,
+    tooltip: { trigger: 'axis', appendToBody: true, backgroundColor: bg3, borderColor: rule, textStyle: { color: ink } },
+    grid: { left: 80, right: 30, top: 30, bottom: 48 },
+    legend: { data: ['AUC', 'F1', 'AP'], bottom: 0, textStyle: { color: muted, fontSize: 10 } },
+    xAxis: { type: 'category', data: ['Fold 1', 'Fold 2', 'Fold 3', 'Fold 4', 'Fold 5', 'Mean'], axisLabel: { color: ink2, fontSize: 11 }, axisLine: { lineStyle: { color: rule } } },
+    yAxis: { type: 'value', min: 0.7, max: 1.0, axisLabel: { color: muted, fontSize: 10 }, splitLine: { lineStyle: { color: rule } }, axisLine: { lineStyle: { color: rule } } },
+    series: [
+      { name: 'AUC', type: 'line', data: [0.9464, 0.9446, 0.9484, 0.9382, 0.9549, 0.9465], lineStyle: { color: accent, width: 2.5 }, itemStyle: { color: accent }, symbol: 'circle', symbolSize: 8, label: { show: true, color: accent, fontSize: 10, formatter: function(p) { return p.value.toFixed(4); } } },
+      { name: 'F1', type: 'line', data: [0.7509, 0.7531, 0.7426, 0.7317, 0.7594, 0.7475], lineStyle: { color: accent2, width: 2 }, itemStyle: { color: accent2 }, symbol: 'diamond', symbolSize: 8, label: { show: true, color: accent2, fontSize: 10, formatter: function(p) { return p.value.toFixed(4); } } },
+      { name: 'AP', type: 'line', data: [0.8592, 0.8583, 0.8643, 0.8466, 0.8820, 0.8621], lineStyle: { color: success, width: 2, type: 'dashed' }, itemStyle: { color: success }, symbol: 'triangle', symbolSize: 8, label: { show: true, color: success, fontSize: 10, formatter: function(p) { return p.value.toFixed(4); } } }
+    ]
+  });
+  window.addEventListener('resize', function() { chart13.resize(); });
 
 })();
