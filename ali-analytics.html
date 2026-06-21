@@ -557,7 +557,7 @@
       <div class="insight-card">
         <span class="icon">🔍</span>
         <h4>用户行为漏斗</h4>
-        <p>88.9% 用户有购买行为，但<strong>收藏渗透率仅 67.3%</strong>。品类 1863 转化率最高（20.88%），双12当日转化率飙升至 50.49%。决策周期中位数 2 天，但 26.6% 用户需 7 天以上。</p>
+        <p>88.9% 用户有购买行为，但<strong>收藏渗透率仅 67.3%</strong>。品类 1863 转化率最高（20.88%），双12当日转化率飙升至 50.49%。决策周期中位数 2 天，但 23.6% 用户需 7 天以上。</p>
       </div>
       <div class="insight-card">
         <span class="icon">🎯</span>
@@ -655,7 +655,7 @@
     <div class="section-header">
       <div class="section-num">Section 02 — 预测建模</div>
       <h2>T+1 购买预测模型</h2>
-      <p class="subtitle">基于用户 31 天行为数据，预测 12月19日 是否购买商品子集 P。XGBoost + 四层特征工程 + 分层5折交叉验证。注意：训练窗口 74% 处于大促前后，模型反映的是"大促月"行为规律。</p>
+      <p class="subtitle">基于用户 31 天行为数据，预测 12月19日 是否购买商品子集 P。XGBoost + 四层特征工程 + 分层5折交叉验证。注意：训练窗口 74% 处于大促前（11.18-12.10），模型反映的是"大促月"行为规律。</p>
     </div>
 
     <!-- 2.1 CV Results -->
@@ -716,7 +716,7 @@
     </div>
 
     <div class="callout gold" style="margin-top: 20px;">
-      <p><strong>⚠️ 数据窗口局限性：</strong>31 天训练窗口中有 23 天（74%）处于大促前/中，行为模式与日常存在系统偏差。T+1 预测标签（12.19）是大促后第 7 天，用户预算可能已被大促消耗——<strong>模型学到的是"大促月"行为规律，而非日常规律</strong>。建议后续引入促销日历特征（距大促天数、大促后恢复天数），并在非大促月份数据上验证模型泛化能力。</p>
+      <p><strong>⚠️ 数据窗口局限性：</strong>31 天训练窗口中有 23 天（74%）处于大促前（11.18-12.10），3 天大促中（12.11-12.13），行为模式与日常存在系统偏差。T+1 预测标签（12.19）是大促后第 7 天，用户预算可能已被大促消耗——<strong>模型学到的是"大促月"行为规律，而非日常规律</strong>。建议后续引入促销日历特征（距大促天数、大促后恢复天数），并在非大促月份数据上验证模型泛化能力。</p>
     </div>
 
     <div class="callout" style="margin-top: 20px;">
@@ -770,22 +770,8 @@
       <p class="subtitle">从分析到行动——量化业务影响，设计可落地的推荐策略与部署架构。</p>
     </div>
 
-    <div class="roi-box" style="margin-bottom: 24px;">
-      <div class="roi-item">
-        <div class="roi-label">加购率提升空间</div>
-        <div class="roi-val">+6.76pp</div>
-        <div class="roi-label">PSM 因果效应估计</div>
-      </div>
-      <div class="roi-item">
-        <div class="roi-label">可触达用户（加购率提升10%）</div>
-        <div class="roi-val">~861 人</div>
-        <div class="roi-label">基于 8,614 加购用户基数</div>
-      </div>
-      <div class="roi-item">
-        <div class="roi-label">预估增量 GMV</div>
-        <div class="roi-val">+¥58,000</div>
-        <div class="roi-label">假设客单价 ¥50 × 增量购买</div>
-      </div>
+    <div class="callout success" style="margin-bottom: 24px;">
+      <p><strong>业务价值分析：</strong>基于因果推断结论，加购行为对购买有 +6.76pp 的因果效应（95% CI显著）。目前 8,614 名用户（86.1%）有过加购行为，若通过推荐策略将加购渗透率从 86.1% 提升至更高水平，预计可转化为增量购买。具体 GMV 影响需结合业务实际客单价和 AB 实验数据校准，本文不提供未经数据验证的 GMV 估算。</p>
     </div>
 
     <div class="two-col" style="margin-bottom: 24px;">
@@ -802,8 +788,8 @@
               <tr><td>u_buy_rate</td><td class="num">+0.7395</td><td class="num">2.10</td><td>用户购买率每+1，购买概率×2.1</td></tr>
               <tr><td>has_cart</td><td class="num">+0.7245</td><td class="num">2.06</td><td>加购过→购买概率×2.06</td></tr>
               <tr><td>ui_browse</td><td class="num">+0.6764</td><td class="num">1.97</td><td>对该商品浏览+1→×1.97</td></tr>
-              <tr><td>ui_cart</td><td class="num">+0.5125</td><td class="num">1.67</td><td>对该商品加购+1→×1.67</td></tr>
-              <tr><td>i_popularity</td><td class="num">+0.4231</td><td class="num">1.53</td><td>商品热度+1→×1.53</td></tr>
+              <tr><td>ui_cart</td><td class="num" style="color:var(--danger)">-0.2820</td><td class="num" style="color:var(--danger)">0.75</td><td>对该商品加购越多→购买概率反而降低（LR线性模型局限性，与XGBoost结论矛盾，应以XGBoost为准）</td></tr>
+              <tr><td>i_popularity</td><td class="num" style="color:var(--danger)">-0.4164</td><td class="num" style="color:var(--danger)">0.66</td><td>LR中商品热度系数为负（与XGBoost Top1特征矛盾，说明LR不适合此非线性关系）</td></tr>
               <tr><td style="color:var(--danger)">has_interact</td><td class="num" style="color:var(--danger)">-11.15</td><td class="num" style="color:var(--danger)">0.00</td><td>无交互→几乎不购买</td></tr>
               <tr><td style="color:var(--danger)">days_since_last</td><td class="num" style="color:var(--danger)">-9.59</td><td class="num" style="color:var(--danger)">0.00</td><td>距上次交互越久，概率越低</td></tr>
             </tbody>
@@ -829,28 +815,28 @@
             <td><strong>加购助推</strong></td>
             <td>浏览≥3次未加购</td>
             <td>浏览同一品类≥3次/7天</td>
-            <td class="highlight">转化率+6.76pp</td>
+            <td class="highlight">因果效应+6.76pp（需AB验证）</td>
             <td><span style="color:var(--danger);font-weight:700;">P0</span></td>
           </tr>
           <tr>
             <td><strong>决策周期干预</strong></td>
             <td>决策周期>7天</td>
             <td>首次浏览距今>7天未购买</td>
-            <td>缩短决策周期1-2天</td>
+            <td>覆盖23.6%用户，需AB验证</td>
             <td><span style="color:var(--accent2);font-weight:700;">P1</span></td>
           </tr>
           <tr>
             <td><strong>大促蓄水</strong></td>
             <td>高活跃低转化</td>
             <td>浏览频次>P75，转化率<P25</td>
-            <td>双12转化率提升2-3×</td>
+            <td>12.10-12.11蓄水窗口，需AB验证</td>
             <td><span style="color:var(--accent2);font-weight:700;">P1</span></td>
           </tr>
           <tr>
             <td><strong>品类推荐</strong></td>
             <td>全量用户</td>
             <td>优先推荐品类1863/6344</td>
-            <td>整体转化率+2-3pp</td>
+            <td>品类1863转化率20.88%，需AB验证</td>
             <td><span style="color:var(--accent);font-weight:700;">P2</span></td>
           </tr>
           <tr>
@@ -940,12 +926,12 @@ graph TB
       <div class="insight-card">
         <span class="icon">⚠️</span>
         <h4>因果推断局限性</h4>
-        <p>PSM 仅控制可观测混淆因子，未观测混淆（如用户价格敏感度）可能影响估计。建议后续引入工具变量或DID设计。</p>
+        <p>数据集无商品价格字段，无法排除价格对购买决策的混淆效应。PSM仅控制可观测混淆，未观测混淆（如价格敏感度）可能影响ATE估计。建议后续引入工具变量或DID设计。</p>
       </div>
       <div class="insight-card">
         <span class="icon">⚠️</span>
         <h4>业务落地局限性</h4>
-        <p>ROI 估算基于假设客单价 ¥50，实际需结合业务数据校准。缺少AB实验验证，因果效应在实际推荐场景中可能衰减。</p>
+        <p>ATE测量的是群体平均因果效应，不等于个体策略效果。策略实施需通过AB实验验证实际提升幅度，离线因果推断结论不可直接作为线上预期效果。数据集无客单价字段，无法进行可靠的GMV估算。</p>
       </div>
     </div>
 
