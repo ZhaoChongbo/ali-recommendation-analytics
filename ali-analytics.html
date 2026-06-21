@@ -621,7 +621,7 @@
         <div id="chart-decision-cycle" class="chart-container"></div>
       </div>
       <div class="chart-figure">
-        <figcaption>用户分群行为特征（GEE聚类逻辑回归）</figcaption>
+        <figcaption>品类浏览-转化率分布（8,916个品类真实数据）</figcaption>
         <div id="chart-user-segment" class="chart-container"></div>
       </div>
     </div>
@@ -633,10 +633,10 @@
           <tr><th>宏观因素</th><th>数据表现</th><th>对分析的影响</th><th>处理建议</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>双十二大促</strong></td><td>转化率 2.16×，购买 2.55×</td><td class="highlight">行为模式结构性偏移</td><td>引入促销日历特征；分段建模</td></tr>
-          <tr><td><strong>周末效应</strong></td><td>周日浏览 +8.3%，购买 +6.1%</td><td>周末流量自然偏高</td><td>添加 day_of_week 特征</td></tr>
+          <tr><td><strong>双十二大促</strong></td><td>转化率 2.17×，购买 2.58×</td><td class="highlight">行为模式结构性偏移</td><td>引入促销日历特征；分段建模</td></tr>
+          <tr><td><strong>周末效应</strong></td><td>周末转化率 22.7%，低于工作日 23.7%</td><td>周五受12.12影响（转化率 29.6%）</td><td>添加 day_of_week 特征，排除大促干扰</td></tr>
           <tr><td><strong>月末效应</strong></td><td>11.30 前后无明显波动</td><td>本数据集不显著</td><td>不作为特征引入</td></tr>
-          <tr><td><strong>12月电商旺季</strong></td><td>全月购买率 88.9%</td><td>样本为"活跃用户"，结论外推需谨慎</td><td>标注"活跃用户"场景</td></tr>
+          <tr><td><strong>12月电商旺季</strong></td><td>全月购买覆盖率 88.9%</td><td>样本为"活跃用户"，结论外推需谨慎</td><td>标注"活跃用户"场景</td></tr>
           <tr><td><strong>移动端特有</strong></td><td>碎片化浏览，决策周期中位数 2天</td><td>PC端策略不可直接迁移</td><td>单独分析移动端特征</td></tr>
         </tbody>
       </table>
@@ -644,7 +644,7 @@
 
     <!-- 1.6 Key Insights -->
     <div class="callout">
-      <p><strong>关键洞察：</strong>双12当日转化率 50.49%，是日常均值（23.4%）的 2.2 倍。大促前 2 天浏览激增但转化率骤降至 21%——用户存在明显的"加购等大促"蓄水行为。品类 1863 和 6344 转化率最高（~20%），应作为重点推荐品类。大促后流量有部分留存（日均浏览 +3.6%），可作为长期运营的流量入口。</p>
+      <p><strong>关键洞察：</strong>双12当日转化率 50.49%，是日常均值（23.3%）的 2.17 倍。大促前 2 天浏览激增但转化率骤降至 21%——用户存在明显的"加购等大促"蓄水行为。品类 1863 和 6344 转化率最高（~20%），应作为重点推荐品类。大促后流量有部分留存（日均浏览 +4.2%，日均购买 +5.7%），可作为长期运营的流量入口。</p>
     </div>
   </div>
 </section>
@@ -677,7 +677,7 @@
       </div>
       <div class="metric-item">
         <div class="label">XGBoost vs LR</div>
-        <div class="value">+12.1%</div>
+        <div class="value">+11.9%</div>
         <div class="delta">AUC 提升</div>
       </div>
     </div>
@@ -790,12 +790,25 @@
 
     <div class="two-col" style="margin-bottom: 24px;">
       <div class="chart-figure">
-        <figcaption>推荐策略优先级矩阵</figcaption>
+        <figcaption>5折交叉验证性能（AUC/F1/AP）</figcaption>
         <div id="chart-strategy-matrix" class="chart-container"></div>
       </div>
       <div class="chart-figure">
-        <figcaption>用户分层运营策略</figcaption>
-        <div id="chart-user-strategy" class="chart-container"></div>
+        <figcaption>Logistic Regression 关键系数</figcaption>
+        <div class="table-wrap" style="margin:0;border:none;background:transparent;max-height:420px;">
+          <table>
+            <thead><tr><th>特征</th><th>LR系数</th><th>Odds Ratio</th><th>解读</th></tr></thead>
+            <tbody>
+              <tr><td>u_buy_rate</td><td class="num">+0.7395</td><td class="num">2.10</td><td>用户购买率每+1，购买概率×2.1</td></tr>
+              <tr><td>has_cart</td><td class="num">+0.7245</td><td class="num">2.06</td><td>加购过→购买概率×2.06</td></tr>
+              <tr><td>ui_browse</td><td class="num">+0.6764</td><td class="num">1.97</td><td>对该商品浏览+1→×1.97</td></tr>
+              <tr><td>ui_cart</td><td class="num">+0.5125</td><td class="num">1.67</td><td>对该商品加购+1→×1.67</td></tr>
+              <tr><td>i_popularity</td><td class="num">+0.4231</td><td class="num">1.53</td><td>商品热度+1→×1.53</td></tr>
+              <tr><td style="color:var(--danger)">has_interact</td><td class="num" style="color:var(--danger)">-11.15</td><td class="num" style="color:var(--danger)">0.00</td><td>无交互→几乎不购买</td></tr>
+              <tr><td style="color:var(--danger)">days_since_last</td><td class="num" style="color:var(--danger)">-9.59</td><td class="num" style="color:var(--danger)">0.00</td><td>距上次交互越久，概率越低</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -936,9 +949,8 @@ graph TB
       </div>
     </div>
 
-    <div class="chart-figure" style="margin-top: 24px;">
-      <figcaption>改进路线图（Gantt）</figcaption>
-      <div id="chart-roadmap" class="chart-container"></div>
+    <div class="callout gold" style="margin-top: 24px;">
+      <p><strong>改进路线图：</strong>Phase 1（短期）→ 引入商品属性特征（价格/品牌/类目），解决68.1%冷启动问题 · Phase 2（中期）→ AB实验验证因果效应，分别评估大促期与日常期ATE · Phase 3（长期）→ 在线学习框架 + 实时特征 + 促销日历特征，建立非大促月份验证集确保模型泛化。</p>
     </div>
   </div>
 </section>
